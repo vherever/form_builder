@@ -1,0 +1,46 @@
+<div style="width: 800px; margin:  0 auto">
+  <div>
+    No of rows
+    <button (click)="onNumberOfRowsChange('+')">+</button>
+    <button (click)="onNumberOfRowsChange('-')">-</button>
+  </div>
+  <button (click)="addItem()">add item</button>
+<gridster [options]="options">
+  <gridster-item [item]="item" *ngFor="let item of dashboard">
+    <!--      <div class="box">-->
+    <!--        <div class="box-content"></div>-->
+    <!--      </div>-->
+    <div class="gridster-drag-handler"></div>
+    <div class="gridster-item-content">
+      <div class="info-container">{{ item.width }}</div>
+      <input type="text" readonly>
+      <button
+        md-icon-button
+        md-raised-button
+        class="remove-button"
+        (click)="removeItem($event, item)"
+        (touchstart)="removeItem($event, item)"
+        mdTooltip="Remove"
+      >
+        clear
+      </button>
+    </div>
+
+    <!--      <div class="toolbar">-->
+    <!--        <div class="drag-handle">123</div>-->
+    <!--        <div class="item-buttons gridster-item-content" style="height: 100%">-->
+    <!--          <button-->
+    <!--            md-icon-button-->
+    <!--            md-raised-button-->
+    <!--            class="remove-button"-->
+    <!--            (click)="removeItem($event, item)"-->
+    <!--            (touchstart)="removeItem($event, item)"-->
+    <!--            mdTooltip="Remove"-->
+    <!--          >-->
+    <!--            clear-->
+    <!--          </button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+  </gridster-item>
+</gridster>
+</div>

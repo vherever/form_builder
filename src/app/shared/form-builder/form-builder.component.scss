@@ -1,0 +1,76 @@
+gridster {
+  background-color: #fdeaca;
+  width: 100% !important;
+  .gridster-item-content {
+    height: 100%;
+    padding: 10px 10px 10px 35px;
+    input {
+      cursor: default;
+      padding: 9px 10px;
+      border-radius: 3px;
+      border: 1px solid #cbd6e2;
+      font-size: 16px;
+      transition: all .15s ease-out;
+      background-color: #f5f8fa;
+      color: #33475b;
+      display: block;
+      height: 40px;
+      line-height: 22px;
+      text-align: left;
+      vertical-align: middle;
+      width: 100%;
+      outline: none;
+    }
+    .info-container {
+      position: absolute;
+      font-size: 13px;
+      right:0;
+      top: 0;
+      margin-left:auto;
+      margin-right:auto;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+  }
+}
+
+::ng-deep gridster {
+  gridster-item {
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    &:hover {
+      border: 1px solid #7ab5bf;
+      -webkit-border-top-left-radius: 5px;
+      -webkit-border-bottom-left-radius: 5px;
+      -moz-border-radius-topleft: 5px;
+      -moz-border-radius-bottomleft: 5px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+  }
+  .gridster-drag-handler {
+    width: 25px;
+    height: 100%;
+    background-color: #7ab5bf;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+  }
+  .gridster-row {
+    border-top: 1px dashed #ffa502 !important;
+    border-bottom: 1px dashed #ffa502 !important;
+  }
+  .gridster-column {
+    border-left: 1px dashed #ffa502 !important;
+    border-right: 1px dashed #ffa502 !important;
+  }
+  .gridster-item-moving {
+    opacity: .7;
+  }
+}
