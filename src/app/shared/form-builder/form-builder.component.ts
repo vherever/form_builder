@@ -19,6 +19,7 @@ interface GridsterItemExtended extends GridsterItem {
 })
 export class FormBuilderComponent {
   private maxWidthCols = 6;
+  private currentRowsCount = 2;
 
   public options: GridsterConfig;
   public dashboard: Array<GridsterItemExtended>;
@@ -86,7 +87,7 @@ export class FormBuilderComponent {
       disableWindowResize: false,
       disableWarnings: false,
       scrollToNewItems: false,
-      itemInitCallback: this.itemInitCallback,
+      itemInitCallback: this.itemInitCallback.bind(this),
       itemResizeCallback: this.itemResizeCallback.bind(this)
     };
 
@@ -100,8 +101,8 @@ export class FormBuilderComponent {
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  private setPlusRowButtonActive(): void {
-    this.isPlusRowButtonActive = true;
+  private setMinusRowButtonActive(currentRowsCount: number): void {
+    this.isMinusRowButtonActive = currentRowsCount > 1 || !!this.dashboard.find(o => o.y > 0);
     this.cdr.detectChanges();
   }
 
@@ -110,13 +111,14 @@ export class FormBuilderComponent {
   }
 
   private itemResizeCallback(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
-    const that = this;
     const cols = itemComponent.$item.cols;
-    itemComponent.item['width'] = that.calculateWidth(cols);
+    itemComponent.item['width'] = this.calculateWidth(cols);
   }
 
-  private itemInitCallback(_: GridsterItem, b: GridsterItemComponentInterface): void {
-    b.drag.dragMove = function (e: any): void {
+  private itemInitCallback(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
+    const cols = itemComponent.$item.cols;
+    itemComponent.item['width'] = this.calculateWidth(cols);
+    itemComponent.drag.dragMove = function (e: any): void {
       e.stopPropagation();
       e.preventDefault();
       this.offsetLeft = this.gridster.el.scrollLeft - this.gridster.el.offsetLeft;
@@ -124,6 +126,7 @@ export class FormBuilderComponent {
       this.calculateItemPositionFromMousePosition(e);
       this.calculateItemPositionWithoutScale(e);
     };
+    this.setMinusRowButtonActive(this.options.maxRows!);
   }
 
   removeItem($event: MouseEvent | TouchEvent, item: any): void {
@@ -137,19 +140,20 @@ export class FormBuilderComponent {
 
   addItem(): void {
     this.dashboard.push({ x: 0, y: 0, cols: 2, rows: 1 });
-    console.log('SSS', this.dashboard);
+    this.cdr.detectChanges();
   }
 
   public onNumberOfRowsChange(action: string): void {
-    const currentRowsNum = this.options.maxRows!;
-    if (action === '+' && currentRowsNum < 10) {
+    this.currentRowsCount = this.options.maxRows!;
+    if (action === '+') {
       this.options.maxRows! += 1;
       this.options.minRows! += 1;
-    } else if (action === '-' && currentRowsNum > 1) {
+    } else if (action === '-' || !!this.dashboard.find(o => o.y > 0)) {
+      this.cdr.detectChanges();
       this.options.maxRows! -= 1;
       this.options.minRows! -= 1;
     }
+    this.setMinusRowButtonActive(this.options.maxRows!);
     this.options.api!.optionsChanged!();
-    this.cdr.detectChanges();
   }
 }

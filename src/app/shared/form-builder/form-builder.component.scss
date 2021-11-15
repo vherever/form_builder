@@ -3,7 +3,7 @@ gridster {
   width: 100% !important;
   .gridster-item-content {
     height: 100%;
-    padding: 10px 10px 10px 35px;
+    padding: 10px 10px 10px 33px;
     input {
       cursor: default;
       padding: 9px 10px;
@@ -23,7 +23,7 @@ gridster {
     }
     .info-container {
       position: absolute;
-      font-size: 13px;
+      font-size: 9px;
       right:0;
       top: 0;
       margin-left:auto;
@@ -37,6 +37,8 @@ gridster {
 
 ::ng-deep gridster {
   gridster-item {
+    overflow: visible;
+    border: 1px solid #ff7f50;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
     -moz-border-radius-topleft: 5px;
@@ -54,13 +56,16 @@ gridster {
     }
   }
   .gridster-drag-handler {
-    width: 25px;
+    width: 23px;
     height: 100%;
     background-color: #7ab5bf;
     position: absolute;
     top: 0;
     left: 0;
     cursor: grab;
+    &:hover {
+      background-color: #4e96a3;
+    }
   }
   .gridster-row {
     border-top: 1px dashed #ffa502 !important;
