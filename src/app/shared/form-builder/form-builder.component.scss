@@ -1,9 +1,11 @@
 gridster {
-  background-color: #fdeaca;
+  background-color: transparent;
   width: 100% !important;
+
   .gridster-item-content {
     height: 100%;
     padding: 10px 10px 10px 33px;
+
     input {
       cursor: default;
       padding: 9px 10px;
@@ -21,13 +23,14 @@ gridster {
       width: 100%;
       outline: none;
     }
+
     .info-container {
       position: absolute;
       font-size: 9px;
-      right:0;
+      right: 0;
       top: 0;
-      margin-left:auto;
-      margin-right:auto;
+      margin-left: auto;
+      margin-right: auto;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
@@ -37,45 +40,68 @@ gridster {
 
 ::ng-deep gridster {
   gridster-item {
+    background-color: transparent;
+    border: 1px solid transparent;
     overflow: visible;
-    border: 1px solid #ff7f50;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-bottom-left-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-bottomleft: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+
     &:hover {
       border: 1px solid #7ab5bf;
-      -webkit-border-top-left-radius: 5px;
-      -webkit-border-bottom-left-radius: 5px;
-      -moz-border-radius-topleft: 5px;
-      -moz-border-radius-bottomleft: 5px;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
+    }
+
+    &:hover {
+      .gridster-drag-handler {
+        background-color: #7ab5bf;
+
+        svg {
+          fill: #ffffff;
+        }
+      }
     }
   }
+
   .gridster-drag-handler {
+    svg {
+      width: 15px;
+      height: 17px;
+      fill: #aeacac;
+      position: absolute;
+      z-index: 99;
+      margin-left: auto;
+      margin-right: auto;
+      right: 0;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+    }
+
     width: 23px;
     height: 100%;
-    background-color: #7ab5bf;
     position: absolute;
     top: 0;
     left: 0;
     cursor: grab;
+
     &:hover {
       background-color: #4e96a3;
     }
   }
+
   .gridster-row {
-    border-top: 1px dashed #ffa502 !important;
-    border-bottom: 1px dashed #ffa502 !important;
+    border-top: 1px dashed #dadbdd !important;
+    border-bottom: 1px dashed #dadbdd !important;
   }
+
   .gridster-column {
-    border-left: 1px dashed #ffa502 !important;
-    border-right: 1px dashed #ffa502 !important;
+    border-left: 1px dashed #dadbdd !important;
+    border-right: 1px dashed #dadbdd !important;
   }
+
   .gridster-item-moving {
-    opacity: .7;
+    background-color: #ffffff;
+  }
+
+  .gridster-preview {
+    background: rgba(122, 181, 191, 0.30);
   }
 }

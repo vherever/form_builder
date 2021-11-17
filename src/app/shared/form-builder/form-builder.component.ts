@@ -6,6 +6,9 @@ import {
   GridsterItemComponentInterface,
   GridType,
 } from 'angular-gridster2';
+import { maxBy } from 'lodash';
+import { getArrayItemByKeyValue } from '../../core/helpers/common-helper-functions';
+import { IconsRepository } from '../../core/helpers/icons-repository';
 
 interface GridsterItemExtended extends GridsterItem {
   width?: string;
@@ -20,11 +23,13 @@ interface GridsterItemExtended extends GridsterItem {
 export class FormBuilderComponent {
   private maxWidthCols = 6;
   private currentRowsCount = 2;
+  private defaultItemSize = { x: 0, y: 0, cols: 2, rows: 1 };
 
   public options: GridsterConfig;
   public dashboard: Array<GridsterItemExtended>;
   public isPlusRowButtonActive: boolean;
   public isMinusRowButtonActive: boolean;
+  public dragIconSvg = getArrayItemByKeyValue(IconsRepository.iconsSvgData, 'id', IconsRepository.IconsEnum.DragDots).data;
 
   ngOnInit() {
     this.options = {
@@ -35,7 +40,7 @@ export class FormBuilderComponent {
       outerMargin: true,
       outerMarginTop: null,
       outerMarginRight: null,
-      outerMarginBottom: 50,
+      outerMarginBottom: null,
       outerMarginLeft: null,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
@@ -49,7 +54,7 @@ export class FormBuilderComponent {
       minItemRows: 1,
       maxItemArea: 6, // max item width cols
       minItemArea: 1,
-      defaultItemCols: 1,
+      defaultItemCols: 2,
       defaultItemRows: 1,
       // fixedColWidth: 150,
       fixedRowHeight: 75,
@@ -59,8 +64,8 @@ export class FormBuilderComponent {
       scrollSpeed: 20,
       enableEmptyCellClick: false,
       enableEmptyCellContextMenu: false,
-      enableEmptyCellDrop: false,
-      enableEmptyCellDrag: false,
+      enableEmptyCellDrop: true,
+      enableEmptyCellDrag: true,
       draggable: {
         enabled: true
       },
@@ -88,7 +93,11 @@ export class FormBuilderComponent {
       disableWarnings: false,
       scrollToNewItems: false,
       itemInitCallback: this.itemInitCallback.bind(this),
-      itemResizeCallback: this.itemResizeCallback.bind(this)
+      itemResizeCallback: this.itemResizeCallback.bind(this),
+      emptyCellDropCallback: this.emptyCellClick.bind(this),
+      emptyCellClickCallback: this.emptyCellClick.bind(this),
+      emptyCellContextMenuCallback: this.emptyCellClick.bind(this),
+      emptyCellDragCallback: this.emptyCellClick.bind(this)
     };
 
     this.dashboard = [
@@ -98,11 +107,19 @@ export class FormBuilderComponent {
     ];
   }
 
+  // public dragDotsIcon = iconsSvgData
+
   constructor(private cdr: ChangeDetectorRef) {
   }
 
   private setMinusRowButtonActive(currentRowsCount: number): void {
-    this.isMinusRowButtonActive = currentRowsCount > 1 || !!this.dashboard.find(o => o.y > 0);
+    // this.options.maxRows <=
+    // currentRowsCount > 1 &&
+    const maxY = maxBy(this.dashboard, (o) => {
+      return o.y;
+    });
+    console.log('maxY', currentRowsCount, maxY!.y);
+    this.isMinusRowButtonActive = currentRowsCount > maxY!.y + 1;
     this.cdr.detectChanges();
   }
 
@@ -113,6 +130,27 @@ export class FormBuilderComponent {
   private itemResizeCallback(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
     const cols = itemComponent.$item.cols;
     itemComponent.item['width'] = this.calculateWidth(cols);
+  }
+
+  private emptyCellDropCallback(event: DragEvent, item: GridsterItem): void {
+    console.log('emptyCellDropCallback', event);
+  }
+
+  emptyCellClick(event: MouseEvent, item: GridsterItem): void {
+    console.log('event!!!', event);
+    console.log('emptyCellClick', item);
+    // item.cols = 2;
+    console.info('empty cell click', event, item);
+    this.dashboard.push(item);
+    this.options.api!.optionsChanged!();
+  }
+
+  dragStartHandler(ev: DragEvent): void {
+    console.log('ev', ev);
+    if (ev.dataTransfer) {
+      // ev.dataTransfer.setData('text/plain', 'Drag Me Button');
+      // ev.dataTransfer.dropEffect = 'copy';
+    }
   }
 
   private itemInitCallback(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
@@ -134,16 +172,18 @@ export class FormBuilderComponent {
     $event.stopPropagation();
     setTimeout(() => {
       this.dashboard.splice(this.dashboard.indexOf(item), 1);
+      this.setMinusRowButtonActive(this.options.maxRows!);
       this.cdr.detectChanges();
     }, 1);
   }
 
   addItem(): void {
-    this.dashboard.push({ x: 0, y: 0, cols: 2, rows: 1 });
+    this.dashboard.push(this.defaultItemSize);
     this.cdr.detectChanges();
   }
 
   public onNumberOfRowsChange(action: string): void {
+    console.log('dashboard', this.dashboard);
     this.currentRowsCount = this.options.maxRows!;
     if (action === '+') {
       this.options.maxRows! += 1;
