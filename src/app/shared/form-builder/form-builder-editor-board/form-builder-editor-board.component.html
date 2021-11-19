@@ -1,0 +1,32 @@
+<div style="width: 100%;" class="fb-form-builder-editor-board-wrapper">
+  <div>
+    <button (click)="onNumberOfRowsChange('-')" [disabled]="!isMinusRowButtonActive">-</button>
+    Rows
+    <button (click)="onNumberOfRowsChange('+')">+</button>
+  </div>
+<!--  <button (click)="addItem()">add item</button>-->
+  <gridster [options]="options">
+    <gridster-item [item]="item" *ngFor="let item of dashboard" [ngClass]="{'isSelected': item.isSelected}">
+      <div class="fb-item-preview-wrapper">
+        <fb-actions-panel [item]="item"
+                          (itemRemoveClickEventEmitter)="onItemRemoveClickEventEmit($event)"
+                          (itemEditClickEventEmitter)="onItemEditClickEventEmit($event)"
+        ></fb-actions-panel>
+        <div class="fb-item-preview-wrapper-inner" (click)="onItemClick(item)">
+          <div class="fb-item-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
+          <div class="fb-item-content">
+            <div class="fb-preview-item-header d-flex">
+              <div class="fb-preview-item-header-label">
+                <span *ngIf="item.isRequired" class="fb-is-required-asterisc">*</span>
+                {{ item.label }}
+              </div>
+              <div class="fb-preview-item-header-id">{{ item.id }}</div>
+            </div>
+            <div class="fb-count-info-container">{{ item.width }}</div>
+            <input type="text" readonly>
+          </div>
+        </div>
+      </div>
+    </gridster-item>
+  </gridster>
+</div>

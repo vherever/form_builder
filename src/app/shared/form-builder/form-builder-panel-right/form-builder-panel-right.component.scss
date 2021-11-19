@@ -1,0 +1,92 @@
+.form-builder-panel-right-wrapper {
+  background-color: #ffffff;
+  height: 100%;
+  padding: 25px 25px;
+
+  .fb-preview-item-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .fb-preview-item {
+      position: relative;
+      cursor: grab;
+      border: 2px solid transparent;
+      padding: 10px 10px 10px 25px;
+
+      &:hover {
+        border: 2px solid #f39c12;
+        .fb-preview-item-drag-handler {
+          background-color: #f39c12;
+        }
+      }
+
+      .fb-preview-item-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #f1f1f1;
+        border-radius: 3px;
+        position: relative;
+        span {
+          font-size: 13px;
+          color: #626262;
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          right: 0;
+          text-align: center;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
+        }
+      }
+
+      .fb-preview-item-info-container {
+        padding-left: 15px;
+
+        .fb-preview-item-label {
+          font-size: 13px;
+        }
+
+        .fb-preview-item-description {
+          font-size: 12px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .fb-preview-item {
+    .fb-preview-item-drag-handler {
+      width: 16px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: grab;
+      svg {
+        width: 12px;
+        height: 14px;
+        fill: #aeacac;
+        position: absolute;
+        z-index: 99;
+        margin-left: auto;
+        margin-right: auto;
+        right: 0;
+        text-align: center;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+      }
+    }
+    &:hover {
+      .fb-preview-item-drag-handler {
+        svg {
+          fill: #ffffff;
+        }
+      }
+    }
+  }
+}

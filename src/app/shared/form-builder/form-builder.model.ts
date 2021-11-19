@@ -12,3 +12,20 @@ export interface GridsterItemExtended extends GridsterItem {
   id?: string;
   isRequired?: boolean;
 }
+
+export class ItemDraggablePreviewModel {
+  uuid: string;
+  type: ItemDraggablePreviewEnum;
+  label: string;
+  description: string;
+  id: string;
+}
+
+export enum ItemDraggablePreviewEnum {
+  Text = 'text',
+  Select = 'select',
+  Radio = 'radio',
+  Checkbox = 'checkbox',
+  Date = 'date',
+  Numeric = 'numeric'
+}

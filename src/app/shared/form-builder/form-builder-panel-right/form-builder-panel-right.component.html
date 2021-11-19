@@ -1,0 +1,17 @@
+<div class="form-builder-panel-right-wrapper">
+  <h3>Fields List</h3>
+
+  <ul class="fb-preview-item-list">
+    <li *ngFor="let item of previewItems"
+        (dragstart)="dragStartHandler($event, item)"
+        (dragend)="dragEndHandler($event, item)"
+        draggable="true" class="d-flex align-items-center justify-content-start fb-preview-item">
+      <div class="fb-preview-item-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
+      <div class="fb-preview-item-icon"><span>{{ item.label.charAt(0).toUpperCase() }}</span></div>
+      <div class="fb-preview-item-info-container">
+        <div class="fb-preview-item-label">{{ item.label }}</div>
+        <div class="fb-preview-item-description">{{ item.description }}</div>
+      </div>
+    </li>
+  </ul>
+</div>

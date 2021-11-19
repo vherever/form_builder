@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { GridsterItemExtended } from '../form-builder.model';
+import { GridsterItemExtended } from '../../form-builder.model';
 
 @Component({
   selector: 'fb-actions-panel',

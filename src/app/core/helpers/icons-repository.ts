@@ -7,7 +7,7 @@ export namespace IconsRepository {
     {
       id: IconsEnum.DragDots,
       data: `
-        <svg class="" width="12" height="18" enable-background="new 0 0 512 512" viewBox="0 0 24 24"
+        <svg class="" width="12" height="14" enable-background="new 0 0 512 512" viewBox="0 0 24 24"
             xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
           <g>
             <circle cx="8" cy="4" r="2" xmlns="http://www.w3.org/2000/svg"/>
