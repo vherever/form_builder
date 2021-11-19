@@ -1,0 +1,55 @@
+// Thin
+@font-face {
+  font-family: 'M PLUS 1';
+  src: url('~assets/fonts/MPLUS1-Thin.eot');
+  src: url('~assets/fonts/MPLUS1-Thin.eot?#iefix') format('embedded-opentype'),
+  url('~assets/fonts/MPLUS1-Thin.woff2') format('woff2'),
+  url('~assets/fonts/MPLUS1-Thin.woff') format('woff'),
+  url('~assets/fonts/MPLUS1-Thin.woff') format('truetype'),
+  url('~assets/fonts/MPLUS1-Thin.svg#MPLUS1-Regular') format('svg');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Light
+@font-face {
+  font-family: 'M PLUS 1';
+  src: url('~assets/fonts/MPLUS1-Light.eot');
+  src: url('~assets/fonts/MPLUS1-Light.eot?#iefix') format('embedded-opentype'),
+  url('~assets/fonts/MPLUS1-Light.woff2') format('woff2'),
+  url('~assets/fonts/MPLUS1-Light.woff') format('woff'),
+  url('~assets/fonts/MPLUS1-Light.woff') format('truetype'),
+  url('~assets/fonts/MPLUS1-Light.svg#MPLUS1-Regular') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Regular
+@font-face {
+  font-family: 'M PLUS 1';
+  src: url('~assets/fonts/MPLUS1-Regular.eot');
+  src: url('~assets/fonts/MPLUS1-Regular.eot?#iefix') format('embedded-opentype'),
+  url('~assets/fonts/MPLUS1-Regular.woff2') format('woff2'),
+  url('~assets/fonts/MPLUS1-Regular.woff') format('woff'),
+  url('~assets/fonts/MPLUS1-Regular.woff') format('truetype'),
+  url('~assets/fonts/MPLUS1-Regular.svg#MPLUS1-Regular') format('svg');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Bold
+@font-face {
+  font-family: 'M PLUS 1';
+  src: url('~assets/fonts/MPLUS1-Bold.eot');
+  src: url('~assets/fonts/MPLUS1-Bold.eot?#iefix') format('embedded-opentype'),
+  url('~assets/fonts/MPLUS1-Bold.woff2') format('woff2'),
+  url('~assets/fonts/MPLUS1-Bold.woff') format('woff'),
+  url('~assets/fonts/MPLUS1-Bold.woff') format('truetype'),
+  url('~assets/fonts/MPLUS1-Bold.svg#MPLUS1-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

@@ -2,88 +2,129 @@ gridster {
   background-color: transparent;
   width: 100% !important;
 
-  .gridster-item-content {
-    height: 100%;
-    padding: 10px 10px 10px 33px;
+  gridster-item {
+    &:hover {
+      .fb-item-preview-wrapper {
+        border: 2px solid #7ab5bf;
+      }
+    }
+    .fb-item-preview-wrapper {
+      .fb-item-preview-wrapper-inner {
+        background-color: #ffffff;
+        height: 100%;
+        cursor: grab;
+      }
+      .fb-preview-item-header {
+        font-size: 12px;
+        padding-bottom: 5px;
+        .fb-preview-item-header-label {
+          .fb-is-required-asterisc {
+            font-size: 9px;
+          }
+        }
+        .fb-preview-item-header-id {
+          font-weight: 300;
+          font-style: italic;
+          margin-left: 5px;
+        }
+      }
+      border: 2px solid transparent;
+      .fb-item-content {
+        height: 100%;
+        padding: 20px 10px 10px 33px;
 
-    input {
-      cursor: default;
-      padding: 9px 10px;
-      border-radius: 3px;
-      border: 1px solid #cbd6e2;
-      font-size: 16px;
-      transition: all .15s ease-out;
-      background-color: #f5f8fa;
-      color: #33475b;
-      display: block;
-      height: 40px;
-      line-height: 22px;
-      text-align: left;
-      vertical-align: middle;
-      width: 100%;
-      outline: none;
+        input {
+          cursor: pointer;
+          padding: 9px 10px;
+          border-radius: 3px;
+          border: 1px solid #cbd6e2;
+          font-size: 16px;
+          transition: all .15s ease-out;
+          background-color: #f5f8fa;
+          color: #33475b;
+          display: block;
+          height: 40px;
+          line-height: 22px;
+          text-align: left;
+          vertical-align: middle;
+          width: 100%;
+          outline: none;
+        }
+
+        .fb-count-info-container {
+          color: #3a3a3a;
+          font-weight: 300;
+          position: absolute;
+          font-size: 9px;
+          right: 0;
+          top: 4px;
+          margin-left: auto;
+          margin-right: auto;
+          left: 13px;
+          transform: translateX(-50%);
+          text-align: center;
+        }
+      }
+    }
+    &.isSelected {
+      .fb-item-preview-wrapper {
+        border: 2px solid #34495e;
+      }
     }
 
-    .info-container {
-      position: absolute;
-      font-size: 9px;
-      right: 0;
-      top: 0;
-      margin-left: auto;
-      margin-right: auto;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
+    background-color: transparent;
+    overflow: visible;
+  }
+}
+
+:host ::ng-deep {
+  .fb-item-preview-wrapper {
+    height: 100%;
+    &:hover {
+      .fb-actions-panel-wrapper {
+        visibility: visible;
+      }
     }
   }
 }
 
 ::ng-deep gridster {
   gridster-item {
-    background-color: transparent;
-    border: 1px solid transparent;
-    overflow: visible;
+    .fb-item-drag-handler {
+      svg {
+        width: 15px;
+        height: 17px;
+        fill: #aeacac;
+        position: absolute;
+        z-index: 99;
+        margin-left: auto;
+        margin-right: auto;
+        right: 0;
+        text-align: center;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+      }
 
-    &:hover {
-      border: 1px solid #7ab5bf;
+      width: 23px;
+      height: calc(100% - 4px);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      cursor: grab;
+
+      &:hover {
+        //background-color: #4e96a3;
+      }
     }
-
-    &:hover {
-      .gridster-drag-handler {
+    &:hover:not(.gridster-item-resizing) {
+      .fb-item-drag-handler {
         background-color: #7ab5bf;
 
         svg {
-          fill: #ffffff;
+          fill: #ffffff !important;
         }
       }
-    }
-  }
-
-  .gridster-drag-handler {
-    svg {
-      width: 15px;
-      height: 17px;
-      fill: #aeacac;
-      position: absolute;
-      z-index: 99;
-      margin-left: auto;
-      margin-right: auto;
-      right: 0;
-      text-align: center;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-    }
-
-    width: 23px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: grab;
-
-    &:hover {
-      background-color: #4e96a3;
     }
   }
 
@@ -103,5 +144,10 @@ gridster {
 
   .gridster-preview {
     background: rgba(122, 181, 191, 0.30);
+  }
+
+  .gridster-item-resizable-handler {
+    z-index: 99;
+    //background-color: orange;
   }
 }

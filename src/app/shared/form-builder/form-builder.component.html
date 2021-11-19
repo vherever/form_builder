@@ -7,19 +7,26 @@
   <button (click)="addItem()">add item</button>
   <div (dragstart)="dragStartHandler($event)" draggable="true">Drag me!</div>
   <gridster [options]="options">
-    <gridster-item [item]="item" *ngFor="let item of dashboard">
-      <div class="gridster-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
-      <div class="gridster-item-content">
-        <div class="info-container">{{ item.width }}</div>
-        <input type="text" readonly>
-        <button
-          md-icon-button
-          md-raised-button
-          class="remove-button"
-          (click)="removeItem($event, item)"
-          mdTooltip="Remove"
-        >x
-        </button>
+    <gridster-item [item]="item" *ngFor="let item of dashboard" [ngClass]="{'isSelected': item.isSelected}">
+      <div class="fb-item-preview-wrapper">
+        <fb-actions-panel [item]="item"
+                          (itemRemoveClickEventEmitter)="onItemRemoveClickEventEmit($event)"
+                          (itemEditClickEventEmitter)="onItemEditClickEventEmit($event)"
+        ></fb-actions-panel>
+        <div class="fb-item-preview-wrapper-inner" (click)="onItemClick(item)">
+          <div class="fb-item-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
+          <div class="fb-item-content">
+            <div class="fb-preview-item-header d-flex">
+              <div class="fb-preview-item-header-label">
+                <span *ngIf="item.isRequired" class="fb-is-required-asterisc">*</span>
+                {{ item.label }}
+              </div>
+              <div class="fb-preview-item-header-id">{{ item.id }}</div>
+            </div>
+            <div class="fb-count-info-container">{{ item.width }}</div>
+            <input type="text" readonly>
+          </div>
+        </div>
       </div>
     </gridster-item>
   </gridster>

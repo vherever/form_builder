@@ -9,10 +9,7 @@ import {
 import { maxBy } from 'lodash';
 import { getArrayItemByKeyValue } from '../../core/helpers/common-helper-functions';
 import { IconsRepository } from '../../core/helpers/icons-repository';
-
-interface GridsterItemExtended extends GridsterItem {
-  width?: string;
-}
+import { GridsterItemExtended } from './form-builder.model';
 
 @Component({
   selector: 'form-builder',
@@ -21,12 +18,10 @@ interface GridsterItemExtended extends GridsterItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormBuilderComponent {
-  private maxWidthCols = 6;
   private currentRowsCount = 2;
-  private defaultItemSize = { x: 0, y: 0, cols: 2, rows: 1 };
 
   public options: GridsterConfig;
-  public dashboard: Array<GridsterItemExtended>;
+  public dashboard: GridsterItemExtended[];
   public isPlusRowButtonActive: boolean;
   public isMinusRowButtonActive: boolean;
   public dragIconSvg = getArrayItemByKeyValue(IconsRepository.iconsSvgData, 'id', IconsRepository.IconsEnum.DragDots).data;
@@ -36,7 +31,7 @@ export class FormBuilderComponent {
       gridType: GridType.VerticalFixed,
       // compactType: CompactType.CompactLeftAndUp,
       setGridSize: true,
-      margin: 5,
+      margin: 15,
       outerMargin: true,
       outerMarginTop: null,
       outerMarginRight: null,
@@ -49,7 +44,7 @@ export class FormBuilderComponent {
       minRows: 2,
       maxRows: 2,
       maxItemCols: 6, // max item width cols
-      minItemCols: 1,
+      minItemCols: 2,
       maxItemRows: 1,
       minItemRows: 1,
       maxItemArea: 6, // max item width cols
@@ -57,7 +52,7 @@ export class FormBuilderComponent {
       defaultItemCols: 2,
       defaultItemRows: 1,
       // fixedColWidth: 150,
-      fixedRowHeight: 75,
+      fixedRowHeight: 100,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
       scrollSensitivity: 10,
@@ -95,31 +90,26 @@ export class FormBuilderComponent {
       itemInitCallback: this.itemInitCallback.bind(this),
       itemResizeCallback: this.itemResizeCallback.bind(this),
       emptyCellDropCallback: this.emptyCellClick.bind(this),
-      emptyCellClickCallback: this.emptyCellClick.bind(this),
-      emptyCellContextMenuCallback: this.emptyCellClick.bind(this),
-      emptyCellDragCallback: this.emptyCellClick.bind(this)
+      // emptyCellClickCallback: this.emptyCellClick.bind(this),
+      // emptyCellContextMenuCallback: this.emptyCellClick.bind(this),
+      // emptyCellDragCallback: this.emptyCellClick.bind(this)
     };
 
     this.dashboard = [
-      { cols: 3, rows: 1, y: 0, x: 0 },
-      { cols: 1, rows: 1, y: 0, x: 2 },
-      { cols: 1, rows: 1, y: 0, x: 4 },
+      { cols: 2, rows: 1, y: 0, x: 0, uuid: '0', label: 'First Name', id: 'firstName', isRequired: true },
+      { cols: 2, rows: 1, y: 0, x: 2, uuid: '1', label: 'Last Name', id: 'lastName', isRequired: true },
+      { cols: 2, rows: 1, y: 0, x: 4, uuid: '2', label: 'Address', id: 'address', isRequired: false },
     ];
   }
-
-  // public dragDotsIcon = iconsSvgData
 
   constructor(private cdr: ChangeDetectorRef) {
   }
 
   private setMinusRowButtonActive(currentRowsCount: number): void {
-    // this.options.maxRows <=
-    // currentRowsCount > 1 &&
     const maxY = maxBy(this.dashboard, (o) => {
       return o.y;
     });
-    console.log('maxY', currentRowsCount, maxY!.y);
-    this.isMinusRowButtonActive = currentRowsCount > maxY!.y + 1;
+    this.isMinusRowButtonActive = currentRowsCount > maxY!?.y + 1;
     this.cdr.detectChanges();
   }
 
@@ -136,11 +126,13 @@ export class FormBuilderComponent {
     console.log('emptyCellDropCallback', event);
   }
 
+  onItemClick(item: GridsterItemExtended): void {
+    this.dashboard.forEach(o => o.isSelected = false);
+    item.isSelected = !item.isSelected;
+    console.log('item selected', item);
+  }
+
   emptyCellClick(event: MouseEvent, item: GridsterItem): void {
-    console.log('event!!!', event);
-    console.log('emptyCellClick', item);
-    // item.cols = 2;
-    console.info('empty cell click', event, item);
     this.dashboard.push(item);
     this.options.api!.optionsChanged!();
   }
@@ -153,9 +145,10 @@ export class FormBuilderComponent {
     }
   }
 
-  private itemInitCallback(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
+  private itemInitCallback(item: GridsterItemExtended, itemComponent: GridsterItemComponentInterface): void {
     const cols = itemComponent.$item.cols;
-    itemComponent.item['width'] = this.calculateWidth(cols);
+    item.isSelected = false;
+    item.width = this.calculateWidth(cols);
     itemComponent.drag.dragMove = function (e: any): void {
       e.stopPropagation();
       e.preventDefault();
@@ -165,25 +158,17 @@ export class FormBuilderComponent {
       this.calculateItemPositionWithoutScale(e);
     };
     this.setMinusRowButtonActive(this.options.maxRows!);
-  }
-
-  removeItem($event: MouseEvent | TouchEvent, item: any): void {
-    $event.preventDefault();
-    $event.stopPropagation();
     setTimeout(() => {
-      this.dashboard.splice(this.dashboard.indexOf(item), 1);
-      this.setMinusRowButtonActive(this.options.maxRows!);
       this.cdr.detectChanges();
     }, 1);
   }
 
   addItem(): void {
-    this.dashboard.push(this.defaultItemSize);
+    this.dashboard.push({ x: 0, y: 0, cols: 2, rows: 1, isRequired: false, uuid: '', label: `Item_${this.dashboard.length + 1}`, id: `item_${this.dashboard.length + 1}` });
     this.cdr.detectChanges();
   }
 
   public onNumberOfRowsChange(action: string): void {
-    console.log('dashboard', this.dashboard);
     this.currentRowsCount = this.options.maxRows!;
     if (action === '+') {
       this.options.maxRows! += 1;
@@ -193,7 +178,18 @@ export class FormBuilderComponent {
       this.options.maxRows! -= 1;
       this.options.minRows! -= 1;
     }
+    this.cdr.detectChanges();
     this.setMinusRowButtonActive(this.options.maxRows!);
     this.options.api!.optionsChanged!();
+  }
+
+  public onItemRemoveClickEventEmit(item: GridsterItemExtended): void {
+    this.dashboard.splice(this.dashboard.indexOf(item), 1);
+    this.setMinusRowButtonActive(this.options.maxRows!);
+    this.cdr.detectChanges();
+  }
+
+  public onItemEditClickEventEmit(item: GridsterItemExtended): void {
+    this.onItemClick(item);
   }
 }
