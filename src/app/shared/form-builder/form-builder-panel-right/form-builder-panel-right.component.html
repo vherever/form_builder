@@ -1,8 +1,11 @@
 <div class="form-builder-panel-right-wrapper">
   <h3>Fields List</h3>
 
+  <fb-search-control (notifyFilter)="onNotifyFilter($event)"
+              [placeholder]="'Filter by label, description...'"
+  ></fb-search-control>
   <ul class="fb-preview-item-list">
-    <li *ngFor="let item of previewItems"
+    <li *ngFor="let item of previewItems | filter: {label: searchControlService.filterText, description: searchControlService.filterText}"
         (dragstart)="dragStartHandler($event, item)"
         (dragend)="dragEndHandler($event, item)"
         draggable="true" class="d-flex align-items-center justify-content-start fb-preview-item">

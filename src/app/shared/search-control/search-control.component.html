@@ -1,0 +1,8 @@
+<div class="fb-preview-items-list-search-input-wrapper" #wrapElRef>
+  <input type="text" [placeholder]="placeholder"
+         [formControl]="filterInput"
+         class="fb-preview-items-list-search-input"
+         (focus)="wrapElRef.classList.add('fb-is-focused')"
+         (blur)="wrapElRef.classList.remove('fb-is-focused');">
+  <div class="fb-preview-items-list-search-input-icon" [innerHTML]="searchIcon | safeHtml"></div>
+</div>

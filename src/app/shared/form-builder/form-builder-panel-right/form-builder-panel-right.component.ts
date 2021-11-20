@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { ItemDraggablePreviewEnum, ItemDraggablePreviewModel } from '../form-builder.model';
 import { getArrayItemByKeyValue } from '../../../core/helpers/common-helper-functions';
 import { IconsRepository } from '../../../core/helpers/icons-repository';
+import { SearchControlService } from '../../search-control/search-control.service';
 
 const itemPreviewItemsMock: ItemDraggablePreviewModel[] = [
   {
@@ -60,6 +61,9 @@ export class FormBuilderPanelRightComponent implements OnInit {
   public previewItems: ItemDraggablePreviewModel[];
   public dragIconSvg = getArrayItemByKeyValue(IconsRepository.iconsSvgData, 'id', IconsRepository.IconsEnum.DragDots).data;
 
+  constructor(public searchControlService: SearchControlService) {
+  }
+
   ngOnInit() {
     this.previewItems = itemPreviewItemsMock;
   }
@@ -69,6 +73,10 @@ export class FormBuilderPanelRightComponent implements OnInit {
   }
 
   public dragEndHandler(event: any, item: ItemDraggablePreviewModel): void {
-    console.log('dragEndHandler', item);
+    console.log('dragEndHandler', event, item);
+  }
+
+  onNotifyFilter(value: string): void {
+    this.searchControlService.onNotifyFilter(value);
   }
 }

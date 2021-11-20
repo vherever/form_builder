@@ -6,9 +6,11 @@ import { SafeHtmlPipeModule } from '../../core/pipes/safe-html-pipe/safe-html-pi
 import { FormBuilderEditorBoardComponent } from './form-builder-editor-board/form-builder-editor-board.component';
 import { ActionsPanelComponent } from './form-builder-editor-board/actions-panel/actions-panel.component';
 import { FormBuilderPanelRightComponent } from './form-builder-panel-right/form-builder-panel-right.component';
+import { SearchControlModule } from '../search-control/search-control.module';
+import { FilterPipeModule } from '../../core/pipes/filter/filter-pipe.module';
 
 @NgModule({
-  imports: [CommonModule, GridsterModule, SafeHtmlPipeModule],
+  imports: [CommonModule, GridsterModule, SafeHtmlPipeModule, SearchControlModule, FilterPipeModule],
   declarations: [
     FormBuilderEditorBoardComponent,
     FormBuilderComponent,
