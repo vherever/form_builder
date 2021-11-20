@@ -20,7 +20,7 @@ export class FormBuilderComponent {
 
   ngAfterViewInit() {
     // @ts-ignore
-    this.el = this.boardComponent['cdr'].rootNodes[0].querySelector('#gridster1');
+    this.el = this.boardComponent['cdr'].rootNodes[0].querySelector('gridster');
   }
 
   public onItemDraggedPlacedEventEmit(item: any): void {

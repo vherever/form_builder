@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) {}
 
-  transform(value: string): SafeHtml {
+  transform(value: any): SafeHtml {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
 }

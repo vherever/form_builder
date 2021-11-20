@@ -1,0 +1,44 @@
+<div [formGroup]="form">
+  <ng-container [ngSwitch]="mode">
+    <div class="row">
+      <div class="col-lg-5">
+        <label
+          for="tm-form-field-ff"
+          class="control-label label__container_pushed-down label__container_opacity label__container_bold"
+        >
+          {{ label }}
+          <span class="required">*</span>
+        </label>
+      </div>
+
+      <div class="col-lg-7">
+        <ng-container *ngSwitchCase="'input'">
+          <input
+            class="form-control mousetrap"
+            #inputRef
+            type="text"
+            id="tm-form-field-ff"
+            [formControlName]="'field'"
+            (ngModelChange)="onValueChanged(inputRef.value)"
+            appAutofocus
+            autocomplete="off"
+          />
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'select'">
+          <select name="" id="">
+            <option value="1">1</option>
+          </select>
+<!--          <app-tax-select-->
+<!--            [options]="options"-->
+<!--            style="width: 350px"-->
+<!--            [defaultValue]="defaultOption?.key"-->
+<!--            [appendTo]="'body'"-->
+<!--            [labelFor]="'ff'"-->
+<!--            (selectValueChangeEmitter)="onValueChanged($event)"-->
+<!--          ></app-tax-select>-->
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

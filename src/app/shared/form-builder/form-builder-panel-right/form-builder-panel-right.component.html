@@ -1,20 +1,26 @@
 <div class="form-builder-panel-right-wrapper">
-  <h5>Create new</h5>
-
-  <fb-search-control (notifyFilter)="onNotifyFilter($event)"
-              [placeholder]="'Filter by label, description...'"
-  ></fb-search-control>
-  <ul class="fb-preview-item-list">
-    <li *ngFor="let item of previewItems | filter: {label: searchControlService.filterText, description: searchControlService.filterText}"
-        (dragstart)="dragStartHandler($event, item)"
-        (dragend)="dragEndHandler($event, item)"
-        draggable="true" class="d-flex align-items-center justify-content-start fb-preview-item">
-      <div class="fb-preview-item-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
-      <div class="fb-preview-item-icon"><span>{{ item.label.charAt(0).toUpperCase() }}</span></div>
-      <div class="fb-preview-item-info-container">
-        <div class="fb-preview-item-label">{{ item.label }}</div>
-        <div class="fb-preview-item-description">{{ item.description }}</div>
+  <mat-tab-group>
+    <mat-tab label="Create New">
+      <div class="mt-2">
+        <fb-search-control (notifyFilter)="onNotifyFilter($event)"
+                           [placeholder]="'Filter by label, description...'"
+        ></fb-search-control>
       </div>
-    </li>
-  </ul>
+      <ul class="fb-preview-item-list">
+        <li *ngFor="let item of previewItems | filter: {label: searchControlService.filterText, description: searchControlService.filterText}"
+            (dragstart)="dragStartHandler($event, item)"
+            (dragend)="dragEndHandler($event, item)"
+            (click)="onItemClick(item)"
+            draggable="true" class="d-flex align-items-center justify-content-start fb-preview-item">
+          <div class="fb-preview-item-drag-handler" [innerHTML]="dragIconSvg | safeHtml"></div>
+          <div class="fb-preview-item-icon"><span>{{ item.label.charAt(0).toUpperCase() }}</span></div>
+          <div class="fb-preview-item-info-container">
+            <div class="fb-preview-item-label">{{ item.label }}</div>
+            <div class="fb-preview-item-description">{{ item.description }}</div>
+          </div>
+        </li>
+      </ul>
+    </mat-tab>
+    <mat-tab label="Add Existing"></mat-tab>
+  </mat-tab-group>
 </div>

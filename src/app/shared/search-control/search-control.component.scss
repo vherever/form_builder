@@ -24,7 +24,7 @@
     fill: #a5a5a5;
     position: absolute;
     right: 7px;
-    top: 1px;
+    top: 5px;
   }
   &.fb-is-focused {
     .fb-preview-items-list-search-input-icon {
@@ -35,10 +35,6 @@
 
 ::ng-deep {
   .fb-preview-items-list-search-input-wrapper {
-    .fb-preview-items-list-search-input {
-      //&:focus {
-      //}
-    }
     .fb-preview-items-list-search-input-icon {
       svg {
         width: 16px;

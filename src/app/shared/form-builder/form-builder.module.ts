@@ -8,9 +8,11 @@ import { ActionsPanelComponent } from './form-builder-editor-board/actions-panel
 import { FormBuilderPanelRightComponent } from './form-builder-panel-right/form-builder-panel-right.component';
 import { SearchControlModule } from '../search-control/search-control.module';
 import { FilterPipeModule } from '../../core/pipes/filter/filter-pipe.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 
 @NgModule({
-  imports: [CommonModule, GridsterModule, SafeHtmlPipeModule, SearchControlModule, FilterPipeModule],
+  imports: [CommonModule, GridsterModule, SafeHtmlPipeModule, SearchControlModule, FilterPipeModule, MatTabsModule, ConfirmDialogModule],
   declarations: [
     FormBuilderEditorBoardComponent,
     FormBuilderComponent,

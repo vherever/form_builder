@@ -1,0 +1,40 @@
+<div class="tax-modal-wrapper">
+  <div mat-dialog-title>
+    {{ dialogData.title || '&nbsp;' }}
+    <button
+      class="btn btn-nocolor button-close"
+      mat-dialog-close
+      [attr.data-humanoids]="'confirm_dialog_close_icon_button'"
+    >
+      <span class="glyphicon glyphicon-remove"></span>
+    </button>
+  </div>
+
+  <div mat-dialog-content>
+    <ng-container *ngIf="dialogData.dialogMode === 'confirm'">
+      <div class="row">
+        <div class="col-lg-12">
+          <div [innerHTML]="dialogData.content | safeHtml"></div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #target></ng-template>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div mat-dialog-actions [attr.align]="'center'">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      *ngIf="dialogData.confirmText"
+      (click)="confirm()"
+      [disabled]="!isOkayActive"
+    >
+      {{ dialogData.confirmText }}
+    </button>
+    <button type="button" class="btn btn-primary ml-2" *ngIf="dialogData.cancelText" (click)="cancel()">
+      {{ dialogData.cancelText }}
+    </button>
+  </div>
+</div>

@@ -3,6 +3,10 @@ import { ItemDraggablePreviewEnum, ItemDraggablePreviewModel } from '../form-bui
 import { getArrayItemByKeyValue } from '../../../core/helpers/common-helper-functions';
 import { IconsRepository } from '../../../core/helpers/icons-repository';
 import { SearchControlService } from '../../search-control/search-control.service';
+import { ConfirmDialogService } from '../../confirm-dialog/confirm-dialog.service';
+import { ConfirmDialogMode } from '../../confirm-dialog/confirm-dialog.model';
+import { DialogTemplateCreateNewFieldComponent } from '../dialog-template-create-new-field/dialog-template-create-new-field.component';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 const itemPreviewItemsMock: Partial<ItemDraggablePreviewModel>[] = [
   {
@@ -49,14 +53,18 @@ const itemPreviewItemsMock: Partial<ItemDraggablePreviewModel>[] = [
   styleUrls: ['./form-builder-panel-right.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormBuilderPanelRightComponent implements OnInit {
+export class FormBuilderPanelRightComponent extends OnDestroyMixin implements OnInit {
   @Input() el: any;
   @Output() itemDraggedPlacedEventEmitter: EventEmitter<ItemDraggablePreviewModel> = new EventEmitter<ItemDraggablePreviewModel>();
 
   public previewItems: Partial<ItemDraggablePreviewModel>[];
   public dragIconSvg = getArrayItemByKeyValue(IconsRepository.iconsSvgData, 'id', IconsRepository.IconsEnum.DragDots).data;
 
-  constructor(public searchControlService: SearchControlService) {
+  constructor(
+    public searchControlService: SearchControlService,
+    private confirmDialogService: ConfirmDialogService
+  ) {
+    super();
   }
 
   ngOnInit() {
@@ -70,7 +78,33 @@ export class FormBuilderPanelRightComponent implements OnInit {
     this.itemDraggedPlacedEventEmitter.emit(item);
   }
 
-  onNotifyFilter(value: string): void {
+  public onNotifyFilter(value: string): void {
     this.searchControlService.onNotifyFilter(value);
+  }
+
+  public onItemClick(item: any): void {
+    console.log('onItemClick', item);
+    this.confirmDialogService.open({
+      dialogMode: ConfirmDialogMode.Component,
+      component: {
+        ref: DialogTemplateCreateNewFieldComponent,
+        data: {
+          id: {}
+        }
+      },
+      width: '300px',
+      title: 'Create new field',
+      cancelText: 'Cancel',
+      confirmText: 'Save'
+    });
+
+    this.confirmDialogService
+      .confirmed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          console.log('confirmed', confirmed);
+        }
+      });
   }
 }
