@@ -1,10 +1,12 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xl-9 col-lg-8">
-      <form-builder-editor-board></form-builder-editor-board>
+      <form-builder-editor-board #boardComponent [item]="draggedItem"></form-builder-editor-board>
     </div>
     <div class="col-xl-3 col-lg-4">
-      <form-builder-panel-right></form-builder-panel-right>
+      <form-builder-panel-right *ngIf="el" [el]="el"
+                                (itemDraggedPlacedEventEmitter)="onItemDraggedPlacedEventEmit($event)"
+      ></form-builder-panel-right>
     </div>
   </div>
 </div>

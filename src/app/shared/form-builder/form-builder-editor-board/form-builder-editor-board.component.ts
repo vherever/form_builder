@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DisplayGrid, GridsterConfig, GridsterItem, GridsterItemComponentInterface, GridType } from 'angular-gridster2';
-import { GridsterItemExtended } from '../form-builder.model';
+import { GridsterItemExtended, ItemDraggableItemInitializer } from '../form-builder.model';
 import { getArrayItemByKeyValue } from '../../../core/helpers/common-helper-functions';
 import { IconsRepository } from '../../../core/helpers/icons-repository';
 import { maxBy } from 'lodash';
@@ -12,11 +12,11 @@ import { maxBy } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormBuilderEditorBoardComponent {
+  @Input() item: any;
   private currentRowsCount = 2;
 
   public options: GridsterConfig;
   public dashboard: GridsterItemExtended[];
-  public isPlusRowButtonActive: boolean;
   public isMinusRowButtonActive: boolean;
   public dragIconSvg = getArrayItemByKeyValue(IconsRepository.iconsSvgData, 'id', IconsRepository.IconsEnum.DragDots).data;
 
@@ -127,9 +127,13 @@ export class FormBuilderEditorBoardComponent {
   }
 
   emptyCellClick(event: MouseEvent, item: GridsterItem): void {
-    console.log('item', item);
-    this.dashboard.push(item);
-    this.options.api!.optionsChanged!();
+    console.log('draggedItem123', event, item);
+    setTimeout(() => {
+      const newItem = new ItemDraggableItemInitializer(this.item);
+      console.log('newItem', Object.assign(item, newItem));
+      this.dashboard.push(item);
+      this.options.api!.optionsChanged!();
+    }, 1);
   }
 
   private itemInitCallback(item: GridsterItemExtended, itemComponent: GridsterItemComponentInterface): void {
