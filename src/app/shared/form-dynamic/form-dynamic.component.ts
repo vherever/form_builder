@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormFieldBase } from './field-types/field-base';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormGeneratorService } from '../../core/services/form-generator.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'form-dynamic',
@@ -13,14 +13,14 @@ import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
 export class FormDynamicComponent extends OnDestroyMixin implements OnInit {
   @Output() isFormInvalidEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() dataEventEmitter: EventEmitter<any>;
+  @Input() dataEventEmitter: Subject<any>;
+  @Input() isConfirmClickedEventEmitter: Subject<boolean>;
   @Input() formFields: FormFieldBase[];
 
   public form: FormGroup;
 
   constructor(
-    private formGeneratorService: FormGeneratorService,
-    private confirmDialogService: ConfirmDialogService<any, any>
+    private formGeneratorService: FormGeneratorService
   ) {
     super();
   }
@@ -30,7 +30,10 @@ export class FormDynamicComponent extends OnDestroyMixin implements OnInit {
     this.isFormInvalidEventEmitter.emit(this.form.invalid);
     this.form.valueChanges.pipe(untilComponentDestroyed(this)).subscribe(() => {
       this.isFormInvalidEventEmitter.emit(this.form.invalid);
-      this.dataEventEmitter.emit(this.form.getRawValue());
+    });
+
+    this.isConfirmClickedEventEmitter.subscribe(() => {
+      this.dataEventEmitter.next(this.form.getRawValue());
     })
   }
 

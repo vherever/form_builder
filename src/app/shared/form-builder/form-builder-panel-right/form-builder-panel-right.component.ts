@@ -102,8 +102,6 @@ export class FormBuilderPanelRightComponent extends OnDestroyMixin implements On
       .pipe(untilComponentDestroyed(this))
       .subscribe((confirmed) => {
         console.log('confirmed', confirmed);
-        if (confirmed) {
-        }
       });
   }
 }

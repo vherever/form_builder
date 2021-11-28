@@ -14,7 +14,6 @@ import { ConfirmDialogBase } from './confirm-dialog-base';
 import { DialogDynamicComponent } from './dynamic-template/dialog-dynamic.component';
 import { ConfirmDialogMode, ConfirmDialogOptionsModel } from './confirm-dialog.model';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { combineLatest, map } from 'rxjs';
 
 @Component({
   templateUrl: './confirm-dialog.component.html',
@@ -23,7 +22,6 @@ import { combineLatest, map } from 'rxjs';
 export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogComponent> implements OnInit {
   @ViewChild('target', { read: ViewContainerRef, static: true }) vcRef: ViewContainerRef;
 
-  // @Output() isConfirmClickedEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dataEventEmitter: EventEmitter<any> = new EventEmitter<any>();
   @Output() formValidEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -46,7 +44,7 @@ export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogCompo
       this.componentRef = this.vcRef.createComponent(factory);
       this.componentRef.instance.dataEventEmitter = this.dataEventEmitter;
       this.componentRef.instance.formValidEventEmitter = this.formValidEventEmitter;
-      // this.componentRef.instance.isConfirmClickedEventEmitter = this.isConfirmClickedEventEmitter;
+      this.componentRef.instance.isConfirmClickedEventEmitter = this.isConfirmClickedEventEmitter;
       this.componentRef.instance.mode = this.dialogData.dialogMode!;
       this.componentRef.instance.label = this.dialogData.label!;
 
@@ -57,30 +55,6 @@ export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogCompo
       this.componentRef.instance.dataEventEmitter.pipe(untilComponentDestroyed(this)).subscribe((value: any) => {
         this.valueToEmit = value;
       });
-
-      // this.isConfirmClickedEventEmitter.subscribe(res => {
-      //   console.log('re1', res);
-      //   if (res) {
-      //     this.componentRef.instance.dataEventEmitter.subscribe(r => {
-      //       console.log('rrr', r);
-      //     })
-      //   }
-      // })
-
-      // combineLatest([
-      //   this.isConfirmClickedEventEmitter,
-      //   this.componentRef.instance.dataEventEmitter
-      // ]).pipe(
-      //   map(([a$, b$]) => ({
-      //     isConfirmClicked: a$,
-      //     valueToEmit: b$
-      //   }))
-      // ).subscribe((res) => {
-      //   console.log('res1', res);
-      //   if (res.isConfirmClicked) {
-      //     this.valueToEmit = res.valueToEmit;
-      //   }
-      // });
     }
 
     if (this.dialogData.dialogMode === ConfirmDialogMode.Select) {

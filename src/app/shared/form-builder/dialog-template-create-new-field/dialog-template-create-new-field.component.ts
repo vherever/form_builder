@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ItemDraggablePreviewModel } from '../form-builder.model';
 import { ConfirmDialogOptionsModel } from '../../confirm-dialog/confirm-dialog.model';
 import { FormDynamicComponent } from '../../form-dynamic/form-dynamic.component';
+import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: './dialog-template-create-new-field.component.html',
@@ -16,21 +17,22 @@ export class DialogTemplateCreateNewFieldComponent {
 
   @Output() formValidEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dataEventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  @Output() isConfirmClickedEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  public isConfirmClickedEventEmitter: Subject<boolean>;
 
   public formFields: FormFieldBase[] = [
     new FormFieldInputText({
       value: '',
-      key: 'key',
-      label: 'label',
+      key: 'label',
+      label: 'Label',
       order: 1,
       validationRules: [{ rule: ValidationRulesEnum.REQUIRED, message: 'This is required.' }],
     }),
 
     new FormFieldInputNumeric({
       value: 1,
-      key: 'key12',
-      label: 'label12',
+      key: 'description',
+      label: 'Description',
       order: 2,
       validationRules: [{ rule: ValidationRulesEnum.DIGITS, message: 'Should be numeric.' }],
     }),
@@ -39,18 +41,8 @@ export class DialogTemplateCreateNewFieldComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogOptionsModel<DialogTemplateCreateNewFieldComponent, Partial<ItemDraggablePreviewModel>>) {
   }
 
-  ngOnInit() {
-    console.log('data123', this.data);
-    this.isConfirmClickedEventEmitter.next(false);
-  }
-
-  ngAfterViewInit() {
-  }
-
   public isFormInvalidEventEmit(isFormInvalid: boolean): void {
     this.formValidEventEmitter.emit(!isFormInvalid);
-    // @ts-ignore
-    // this.dataEventEmitter.emit(this.formDynamicTpl?.form.getRawValue());
   }
 
   public onDataEventEmit(e: any): void {
