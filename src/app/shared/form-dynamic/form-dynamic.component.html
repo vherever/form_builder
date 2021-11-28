@@ -1,0 +1,33 @@
+<form [formGroup]="form">
+  <ng-container *ngFor="let fieldItem of formFields; let index = index">
+    <ng-container [ngSwitch]="fieldItem.controlType">
+      <ng-container *ngSwitchCase="'inputText'"
+                    [ngTemplateOutlet]="inputTpl"
+                    [ngTemplateOutletContext]="{ fieldItem: fieldItem, fieldControl: form.controls[fieldItem.key], index: index }"
+      ></ng-container>
+
+      <ng-container *ngSwitchCase="'inputNumeric'"
+                    [ngTemplateOutlet]="inputTpl"
+                    [ngTemplateOutletContext]="{ fieldItem: fieldItem, fieldControl: form.controls[fieldItem.key], index: index }"
+      ></ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #inputTpl let-fieldItem="fieldItem" let-fieldControl="fieldControl" let-index=index>
+    <div class="fb-form-control">
+      <label for="t_{{ fieldItem.controlType }}_{{ fieldItem.key }}_{{ index }}">
+        {{ fieldItem.label }}
+        <input type="text" autocomplete="off"
+               (keyup)="onKeyUp(fieldItem.key)"
+               formControlName="{{ fieldItem.key }}"
+               [ngClass]="{ 'has-error': isControlHasError(fieldControl) }"
+               id="t_{{ fieldItem.controlType }}_{{ fieldItem.key }}_{{ index }}" value="{{ fieldItem.value }}">
+      </label>
+    </div>
+    <ng-container *ngFor="let validationRule of fieldItem.validationRules">
+        <span class="error-message" *ngIf="isControlHasError(fieldControl) && fieldControl.hasError(validationRule.rule)">
+          {{ validationRule.message }}
+        </span>
+    </ng-container>
+  </ng-template>
+</form>

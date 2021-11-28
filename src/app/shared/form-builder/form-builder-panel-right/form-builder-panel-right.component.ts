@@ -62,7 +62,7 @@ export class FormBuilderPanelRightComponent extends OnDestroyMixin implements On
 
   constructor(
     public searchControlService: SearchControlService,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService<DialogTemplateCreateNewFieldComponent, Partial<ItemDraggablePreviewModel>>
   ) {
     super();
   }
@@ -82,14 +82,13 @@ export class FormBuilderPanelRightComponent extends OnDestroyMixin implements On
     this.searchControlService.onNotifyFilter(value);
   }
 
-  public onItemClick(item: any): void {
-    console.log('onItemClick', item);
+  public onItemClick(item: Partial<ItemDraggablePreviewModel>): void {
     this.confirmDialogService.open({
       dialogMode: ConfirmDialogMode.Component,
       component: {
         ref: DialogTemplateCreateNewFieldComponent,
         data: {
-          id: {}
+          item
         }
       },
       width: '300px',
@@ -101,9 +100,9 @@ export class FormBuilderPanelRightComponent extends OnDestroyMixin implements On
     this.confirmDialogService
       .confirmed()
       .pipe(untilComponentDestroyed(this))
-      .subscribe((confirmed: boolean) => {
+      .subscribe((confirmed) => {
+        console.log('confirmed', confirmed);
         if (confirmed) {
-          console.log('confirmed', confirmed);
         }
       });
   }

@@ -1,7 +1,7 @@
 .fb-preview-items-list-search-input-wrapper {
   position: relative;
   .fb-preview-items-list-search-input {
-    border: 1px solid #34495e;
+    border: 1px solid #c5c5c5;
     outline: none;
     padding: 6px 27px 6px 10px;
     width: 100%;
@@ -27,6 +27,9 @@
     top: 5px;
   }
   &.fb-is-focused {
+    .fb-preview-items-list-search-input {
+      border: 1px solid #34495e;
+    }
     .fb-preview-items-list-search-input-icon {
       fill: #34495e;
     }

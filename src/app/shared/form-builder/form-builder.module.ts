@@ -10,14 +10,26 @@ import { SearchControlModule } from '../search-control/search-control.module';
 import { FilterPipeModule } from '../../core/pipes/filter/filter-pipe.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
+import { DialogTemplateCreateNewFieldComponent } from './dialog-template-create-new-field/dialog-template-create-new-field.component';
+import { FormDynamicModule } from '../form-dynamic/form-dynamic.module';
 
 @NgModule({
-  imports: [CommonModule, GridsterModule, SafeHtmlPipeModule, SearchControlModule, FilterPipeModule, MatTabsModule, ConfirmDialogModule],
+  imports: [
+    CommonModule,
+    GridsterModule,
+    SafeHtmlPipeModule,
+    SearchControlModule,
+    FilterPipeModule,
+    MatTabsModule,
+    ConfirmDialogModule,
+    FormDynamicModule
+  ],
   declarations: [
     FormBuilderEditorBoardComponent,
     FormBuilderComponent,
     ActionsPanelComponent,
-    FormBuilderPanelRightComponent
+    FormBuilderPanelRightComponent,
+    DialogTemplateCreateNewFieldComponent
   ],
   exports: [FormBuilderComponent],
   providers: [],

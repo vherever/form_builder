@@ -7,6 +7,7 @@ import { DialogDynamicComponent } from './dynamic-template/dialog-dynamic.compon
 import { AutofocusDirectiveModule } from '../../core/directives/autofocus/autofocus-directive.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafeHtmlPipeModule } from '../../core/pipes/safe-html-pipe/safe-html-pipe.module';
+import { FormDynamicModule } from '../form-dynamic/form-dynamic.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SafeHtmlPipeModule } from '../../core/pipes/safe-html-pipe/safe-html-pi
     ReactiveFormsModule,
     MatDialogModule,
     AutofocusDirectiveModule,
-    SafeHtmlPipeModule
+    SafeHtmlPipeModule,
+    FormDynamicModule,
   ],
   declarations: [ConfirmDialogComponent, DialogDynamicComponent],
   providers: [ConfirmDialogService]

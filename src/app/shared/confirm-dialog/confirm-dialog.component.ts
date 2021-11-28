@@ -14,6 +14,7 @@ import { ConfirmDialogBase } from './confirm-dialog-base';
 import { DialogDynamicComponent } from './dynamic-template/dialog-dynamic.component';
 import { ConfirmDialogMode, ConfirmDialogOptionsModel } from './confirm-dialog.model';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   templateUrl: './confirm-dialog.component.html',
@@ -22,7 +23,9 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogComponent> implements OnInit {
   @ViewChild('target', { read: ViewContainerRef, static: true }) vcRef: ViewContainerRef;
 
-  @Output() eventValueEmitter: EventEmitter<any> = new EventEmitter<any>();
+  // @Output() isConfirmClickedEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() dataEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  @Output() formValidEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private componentRef: ComponentRef<DialogDynamicComponent>;
 
@@ -31,7 +34,7 @@ export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogCompo
   constructor(
     dialogRef: MatDialogRef<ConfirmDialogComponent>,
     private resolver: ComponentFactoryResolver,
-    @Inject(MAT_DIALOG_DATA) public dialogData: ConfirmDialogOptionsModel
+    @Inject(MAT_DIALOG_DATA) public dialogData: ConfirmDialogOptionsModel<any, any>
   ) {
     super(dialogRef);
   }
@@ -41,16 +44,45 @@ export class ConfirmDialogComponent extends ConfirmDialogBase<ConfirmDialogCompo
     if (this.dialogData.dialogMode !== ConfirmDialogMode.Confirm) {
       const factory = this.resolver.resolveComponentFactory(this.dialogData.component?.ref || DialogDynamicComponent);
       this.componentRef = this.vcRef.createComponent(factory);
-      this.componentRef.instance.eventValueEmitter = this.eventValueEmitter;
+      this.componentRef.instance.dataEventEmitter = this.dataEventEmitter;
+      this.componentRef.instance.formValidEventEmitter = this.formValidEventEmitter;
+      // this.componentRef.instance.isConfirmClickedEventEmitter = this.isConfirmClickedEventEmitter;
       this.componentRef.instance.mode = this.dialogData.dialogMode!;
       this.componentRef.instance.label = this.dialogData.label!;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.componentRef.instance.eventValueEmitter.pipe(untilComponentDestroyed(this)).subscribe((value: any) => {
-        this.isOkayActive = Boolean(value);
+      this.componentRef.instance.formValidEventEmitter.pipe(untilComponentDestroyed(this)).subscribe((state: boolean) => {
+        this.isOkayActive = state;
+      });
+
+      this.componentRef.instance.dataEventEmitter.pipe(untilComponentDestroyed(this)).subscribe((value: any) => {
         this.valueToEmit = value;
       });
+
+      // this.isConfirmClickedEventEmitter.subscribe(res => {
+      //   console.log('re1', res);
+      //   if (res) {
+      //     this.componentRef.instance.dataEventEmitter.subscribe(r => {
+      //       console.log('rrr', r);
+      //     })
+      //   }
+      // })
+
+      // combineLatest([
+      //   this.isConfirmClickedEventEmitter,
+      //   this.componentRef.instance.dataEventEmitter
+      // ]).pipe(
+      //   map(([a$, b$]) => ({
+      //     isConfirmClicked: a$,
+      //     valueToEmit: b$
+      //   }))
+      // ).subscribe((res) => {
+      //   console.log('res1', res);
+      //   if (res.isConfirmClicked) {
+      //     this.valueToEmit = res.valueToEmit;
+      //   }
+      // });
     }
+
     if (this.dialogData.dialogMode === ConfirmDialogMode.Select) {
       this.componentRef.instance.options = this.dialogData.options!;
       this.componentRef.instance.defaultOption = this.dialogData.defaultOption!;

@@ -12,15 +12,14 @@ interface optionalDataModel {
   data?: Object;
 }
 
-export interface ConfirmDialogOptionsModel extends optionalDataModel {
+export interface ConfirmDialogOptionsModel<C, T> extends optionalDataModel {
   title: string;
   cancelText?: string;
   confirmText?: string;
   dialogMode?: ConfirmDialogMode;
   component?: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ref: ComponentType<any>;
-    data: any;
+    ref: ComponentType<C>;
+    data: T;
   };
   content?: string;
   width?: string;

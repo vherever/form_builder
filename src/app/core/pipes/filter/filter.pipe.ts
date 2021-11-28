@@ -10,13 +10,14 @@ export class FilterPipe implements PipeTransform {
       const filterKeys = Object.keys(filter);
       if (isAnd) {
         return items.filter((item) =>
-          filterKeys.reduce((memo, keyName) =>
+          filterKeys.reduce((acc, keyName) =>
             // @ts-ignore
-          (memo && new RegExp(filter[keyName], 'gi').test(item[keyName])) || filter[keyName] === '', true));
+          (acc && new RegExp(filter[keyName], 'gi').test(item[keyName])) || filter[keyName] === '', true));
       } else {
         return items.filter((item) => {
           return filterKeys.some((keyName) => {
-            return new RegExp(filter[keyName], 'gi').test(item[keyName]) || filter[keyName] === '';
+            const filterKeyName = filter[keyName];
+            return new RegExp(filterKeyName ? filterKeyName.replace(/\\/g, "\\\\") : filterKeyName, 'gi').test(item[keyName]) || filterKeyName === '';
           });
         });
       }

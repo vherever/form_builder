@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 import { map, take } from 'rxjs/operators';
 import { ConfirmDialogMode, ConfirmDialogOptionsModel } from './confirm-dialog.model';
 
 @Injectable()
-export class ConfirmDialogService {
+export class ConfirmDialogService<C, T> {
   private dialogRef: MatDialogRef<ConfirmDialogComponent>;
 
   constructor(private dialog: MatDialog) {}
 
-  public open(options: ConfirmDialogOptionsModel): void {
+  public open(options: ConfirmDialogOptionsModel<C, T>): void {
     this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
       autoFocus: false,
       width: options.width || '400px',
@@ -19,7 +19,7 @@ export class ConfirmDialogService {
     });
   }
 
-  public confirmed(): Observable<any> {
+  public confirmed(): Observable<ConfirmDialogOptionsModel<C, T>> {
     return this.dialogRef.afterClosed().pipe(
       take(1),
       map((res) => res)
@@ -30,7 +30,7 @@ export class ConfirmDialogService {
     this.dialogRef.close(state);
   }
 
-  private prepareDialogData(options: ConfirmDialogOptionsModel): ConfirmDialogOptionsModel {
+  private prepareDialogData(options: ConfirmDialogOptionsModel<C, T>): ConfirmDialogOptionsModel<C, T> {
     const baseOptions = {
       dialogMode: options.dialogMode || ConfirmDialogMode.Confirm,
       title: options.title,

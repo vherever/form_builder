@@ -20,7 +20,7 @@ export class ConfirmDialogServiceMock {
   }
 }
 
-let service: ConfirmDialogService;
+let service: ConfirmDialogService<any>;
 
 describe('ConfirmDialogService', () => {
   beforeEach(() => {

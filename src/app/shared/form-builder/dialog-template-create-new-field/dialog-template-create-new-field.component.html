@@ -1,9 +1,4 @@
-<label for="">
-  Label (*)
-  <input type="text">
-</label>
-
-<label for="">
-  Description
-  <input type="text">
-</label>
+<form-dynamic [formFields]="formFields" #formDynamicTpl
+              (isFormInvalidEventEmitter)="isFormInvalidEventEmit($event)"
+              [dataEventEmitter]="dataEventEmitter"
+></form-dynamic>
