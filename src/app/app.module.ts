@@ -7,12 +7,17 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store/reducers';
 
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([]),
   ],
   declarations: [
     AppComponent,
